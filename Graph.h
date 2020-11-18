@@ -5,6 +5,14 @@
 #define EDGE_RELATION_LEN 2
 #define MAX_EDGES (MAX_VERTICES * MAX_VERTICES)
 
+class NeighboursOf
+{
+public:
+    int vertex;
+    int *neighboursArr;
+    int noOfNeighbours;
+};
+
 class Edge
 {
 public:
@@ -30,7 +38,10 @@ public:
     void displayEdgeList();
     void displayVertextPtrs();
     void display();
-    int *getNeighboursOf(int vertex);
+    NeighboursOf *getNeighboursOf(int vertex);
+    void dfs();
+    void dfs(int vertex);
+    void dfsUtil(int vertex, bool isVisited[]);
 };
 
 #endif /*__GRAPH_H__*/

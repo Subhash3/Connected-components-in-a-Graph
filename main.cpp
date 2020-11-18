@@ -22,7 +22,7 @@ int main(int argc, char **argv)
     // Declare variables
     char graphFile[MAX_STR_LEN];
     int edgeRelationShips[MAX_EDGES][EDGE_RELATION_LEN];
-    int nVertices, nEdges;
+    int nVertices, nEdges, i;
     Graph *graph;
 
     // Get the graph representation of graph from file.
@@ -33,10 +33,12 @@ int main(int argc, char **argv)
     graph = new Graph(nVertices, edgeRelationShips, nEdges);
     graph->display();
 
-    graph->getNeighboursOf(1);
-    graph->getNeighboursOf(2);
-    graph->getNeighboursOf(3);
-    graph->getNeighboursOf(9);
+    // for (i = 0; i < nVertices; i++)
+    // {
+    //     graph->getNeighboursOf(i + 1);
+    // }
+
+    graph->dfs();
 
     exit(0);
 }

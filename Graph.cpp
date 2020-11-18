@@ -94,26 +94,86 @@ void Graph::display()
     return;
 }
 
-int *Graph::getNeighboursOf(int vertex)
+NeighboursOf *Graph::getNeighboursOf(int vertex)
 {
+    NeighboursOf *neighboursObject = new NeighboursOf();
+
+    if (vertex < 0 || vertex > this->nVertices)
+    {
+        cout << "Invalid vertex(" << vertex << ")\n";
+        return NULL;
+    }
+
+    neighboursObject->vertex = vertex;
+
     int noOfNeighbours, ptrToEdgelist, i, j;
 
     // noOfNeighbours(1) = vertexPtrs[2] - vertextPtrs[1]
     noOfNeighbours = this->vertexPtrs[vertex] - this->vertexPtrs[vertex - 1];
     ptrToEdgelist = this->vertexPtrs[vertex - 1];
+    neighboursObject->noOfNeighbours = noOfNeighbours;
 
-    printf("Vertex: %d, no.neighbours: %d, ptrToEdgelist: %d\n", vertex, noOfNeighbours, ptrToEdgelist);
+    // printf("Vertex: %d, no.neighbours: %d, ptrToEdgelist: %d\n", vertex, noOfNeighbours, ptrToEdgelist);
 
-    int *neighbors = new int[noOfNeighbours];
+    int *neighbours = new int[noOfNeighbours];
 
     j = 0;
-    cout << "Neighbours of " << vertex << " are: \n(";
+    // cout << "Neighbours of " << vertex << " are: \n(";
     for (i = ptrToEdgelist; i < ptrToEdgelist + noOfNeighbours; i++)
     {
-        cout << (this->edges)[i]->headVertex << ", ";
-        neighbors[j] = (this->edges)[i]->headVertex;
+        // cout << (this->edges)[i]->headVertex << ", ";
+        neighbours[j++] = (this->edges)[i]->headVertex;
     }
-    cout << "\b\b)\n";
+    // cout << "\b\b)\n";
 
-    return neighbors;
+    neighboursObject->neighboursArr = neighbours;
+
+    return neighboursObject;
+}
+
+void Graph::dfs()
+{
+    cout << "Depth First Search\n";
+    bool isVisited[this->nVertices];
+    int i;
+
+    for (i = 0; i < this->nVertices; i++)
+    {
+        isVisited[i] = false;
+    }
+
+    // I'll change it later
+    this->dfsUtil(1, isVisited);
+
+    cout << "\b\b\n";
+}
+
+void Graph::dfs(int vertex)
+{
+    // if(vertex == -1){
+
+    // }
+}
+
+void Graph::dfsUtil(int vertex, bool isVisited[])
+{
+    // printf("dfs(%d)\n", vertex);
+    if (isVisited[vertex - 1])
+    {
+        // printf("%d is already visited. Returning...\n", vertex);
+        return;
+    }
+
+    int i;
+
+    isVisited[vertex - 1] = true;
+    cout << vertex << ", ";
+    NeighboursOf *neighboursObject = this->getNeighboursOf(vertex);
+
+    for (i = 0; i < neighboursObject->noOfNeighbours; i++)
+    {
+        dfsUtil(neighboursObject->neighboursArr[i], isVisited);
+    }
+
+    return;
 }

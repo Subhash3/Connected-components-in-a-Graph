@@ -1,8 +1,11 @@
 CC=g++
 CFLAGS=-Wall
 
-all:
-	$(CC) $(CFLAGS) src/Graph.cpp -o bin/Graph
+all: Graph.o main.cpp
+	$(CC) $(CFLAGS) $^ -o main
 
-# clean:
-# 	rm *.o
+Graph.o: Graph.cpp
+	$(CC) $(CFLAGS) $^ -c
+
+clean:
+	rm *.o

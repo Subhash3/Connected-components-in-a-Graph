@@ -11,7 +11,7 @@ Edge::Edge(int head, int tail)
 
 void Edge::display()
 {
-    cout << this->tailVertex << " -- " << this->headVertex << endl;
+    cout << this->tailVertex << " --> " << this->headVertex << endl;
 
     return;
 }
@@ -56,6 +56,8 @@ Graph::Graph(int nVertices, int relationShips[][EDGE_RELATION_LEN], int nEdges)
     }
 
     this->edgeListLength = edgeIndex;
+    // A dummy slot for nVertices+1 vertex.
+    this->vertexPtrs[nVertices] = edgeIndex;
 }
 
 void Graph::displayEdgeList()
@@ -91,6 +93,27 @@ void Graph::display()
 
     return;
 }
-void Graph::getNeighboursOf(int vertex)
+
+int *Graph::getNeighboursOf(int vertex)
 {
+    int noOfNeighbours, ptrToEdgelist, i, j;
+
+    // noOfNeighbours(1) = vertexPtrs[2] - vertextPtrs[1]
+    noOfNeighbours = this->vertexPtrs[vertex] - this->vertexPtrs[vertex - 1];
+    ptrToEdgelist = this->vertexPtrs[vertex - 1];
+
+    printf("Vertex: %d, no.neighbours: %d, ptrToEdgelist: %d\n", vertex, noOfNeighbours, ptrToEdgelist);
+
+    int *neighbors = new int[noOfNeighbours];
+
+    j = 0;
+    cout << "Neighbours of " << vertex << " are: \n(";
+    for (i = ptrToEdgelist; i < ptrToEdgelist + noOfNeighbours; i++)
+    {
+        cout << (this->edges)[i]->headVertex << ", ";
+        neighbors[j] = (this->edges)[i]->headVertex;
+    }
+    cout << "\b\b)\n";
+
+    return neighbors;
 }

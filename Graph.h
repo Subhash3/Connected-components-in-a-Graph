@@ -21,7 +21,7 @@ class Graph
 public:
     // Class variables
     int nVertices, nEdges;
-    int vertexPtrs[MAX_VERTICES];
+    int vertexPtrs[MAX_VERTICES + 1];
     int edgeListLength;
     Edge *edges[MAX_EDGES];
 
@@ -30,7 +30,7 @@ public:
     void displayEdgeList();
     void displayVertextPtrs();
     void display();
-    void getNeighboursOf(int vertex);
+    int *getNeighboursOf(int vertex);
 };
 
 #endif /*__GRAPH_H__*/

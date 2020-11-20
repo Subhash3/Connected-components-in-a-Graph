@@ -22,8 +22,9 @@ int main(int argc, char **argv)
     // Declare variables
     char graphFile[MAX_STR_LEN];
     int edgeRelationShips[MAX_EDGES][EDGE_RELATION_LEN];
-    int nVertices, nEdges, i;
+    int nVertices, nEdges, i, j;
     Graph *graph;
+    NeighboursOf *neighboursObject;
 
     // Get the graph representation of graph from file.
     strcpy(graphFile, argv[1]);
@@ -33,12 +34,16 @@ int main(int argc, char **argv)
     graph = new Graph(nVertices, edgeRelationShips, nEdges);
     graph->display();
 
-    // for (i = 0; i < nVertices; i++)
-    // {
-    //     graph->getNeighboursOf(i + 1);
-    // }
-
-    graph->dfs();
+    for (i = 0; i < nVertices; i++)
+    {
+        neighboursObject = graph->getNeighboursOf(i + 1);
+        cout << "Neighbours of vertex " << i << ":\n";
+        for (j = 0; j < neighboursObject->noOfNeighbours; j++)
+        {
+            cout << neighboursObject->neighboursArr[j] << ", ";
+        }
+        cout << "\b\b\n";
+    }
 
     exit(0);
 }

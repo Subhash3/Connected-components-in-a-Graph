@@ -41,6 +41,8 @@ public:
     NeighboursOf *getNeighboursOf(int vertex);
     void dfs();
     void dfs(int vertex);
+
+private:
     void dfsUtil(int vertex, bool isVisited[]);
 };
 

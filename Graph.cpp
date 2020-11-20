@@ -133,7 +133,19 @@ NeighboursOf *Graph::getNeighboursOf(int vertex)
 
 void Graph::dfs()
 {
+    int firstVertex;
+
+    // Ofcourse, it will always be 1. But just to avoid hard-coding;
+    firstVertex = this->edges[0]->tailVertex;
+    dfs(firstVertex);
+
+    return;
+}
+
+void Graph::dfs(int vertex)
+{
     cout << "Depth First Search\n";
+
     bool isVisited[this->nVertices];
     int i;
 
@@ -142,17 +154,10 @@ void Graph::dfs()
         isVisited[i] = false;
     }
 
-    // I'll change it later
-    this->dfsUtil(1, isVisited);
-
+    dfsUtil(vertex, isVisited);
     cout << "\b\b\n";
-}
 
-void Graph::dfs(int vertex)
-{
-    // if(vertex == -1){
-
-    // }
+    return;
 }
 
 void Graph::dfsUtil(int vertex, bool isVisited[])

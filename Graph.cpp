@@ -194,7 +194,7 @@ void Graph::tarjansAlgo()
     int firstVertex, i;
     int descTime = 0, child = -1;
     VertexMetaData metaData[this->nVertices];
-    stack<Edge> edgeStack;
+    stack<Edge *> *edgeStack = new stack<Edge *>;
 
     // Ofcourse, it will always be 1. But just to avoid hard-coding;
     firstVertex = this->edges[0]->tailVertex;
@@ -206,12 +206,13 @@ void Graph::tarjansAlgo()
         metaData[i].desc = 0;
         metaData[i].visited = false;
     }
+    printf("\n");
     tarjansAlgoUtil(firstVertex, 0, metaData, edgeStack, &descTime, &child);
 
     return;
 }
 
-int Graph::tarjansAlgoUtil(int vertex, int parent, VertexMetaData metaData[], stack<Edge> edgeStack, int *descTime, int *child)
+int Graph::tarjansAlgoUtil(int vertex, int parent, VertexMetaData metaData[], stack<Edge *> *edgeStack, int *descTime, int *child)
 {
     int i, val;
 
@@ -227,6 +228,10 @@ int Graph::tarjansAlgoUtil(int vertex, int parent, VertexMetaData metaData[], st
             printf("Backedge! Returning my(%d) desc value: %d\n", vertex, metaData[vertex - 1].desc);
             *child = -1;
             return metaData[vertex - 1].desc;
+        }
+        else
+        {
+            edgeStack->pop();
         }
 
         *child = -1;
@@ -249,6 +254,12 @@ int Graph::tarjansAlgoUtil(int vertex, int parent, VertexMetaData metaData[], st
             continue;
         }
         (*descTime)++;
+
+        Edge *edge = new Edge(neighboursObject->neighboursArr[i], vertex);
+        printf("\x1b[32mPushing edge(%d, %d)\x1b[0m\n", vertex, neighboursObject->neighboursArr[i]);
+        edgeStack->push(edge);
+        edgeStack->top()->display();
+
         val = tarjansAlgoUtil(neighboursObject->neighboursArr[i], vertex, metaData, edgeStack, descTime, child);
         printf("\tBack in \x1b[34mTAUtil(%d, %d, metdata, edgeStack, %d, child: %d)\x1b[0m\n", vertex, parent, *descTime, *child);
         if (val != -1)
@@ -260,6 +271,27 @@ int Graph::tarjansAlgoUtil(int vertex, int parent, VertexMetaData metaData[], st
             if (metaData[vertex - 1].desc <= metaData[*child - 1].low)
             {
                 printf("\x1b[31m%d is an Articulation Point!\x1b[0m\n", vertex);
+                printf("Pop all the edges from the stack until (%d, %d)\n", parent, vertex);
+
+                while (true)
+                {
+                    if (edgeStack->empty())
+                    {
+                        printf("Stack is empty\n");
+                        break;
+                    }
+                    Edge *topEdge = edgeStack->top();
+
+                    if (topEdge->headVertex == vertex && topEdge->tailVertex == parent)
+                    {
+                        printf("This id the head of cc\n");
+                        break;
+                    }
+
+                    topEdge->display();
+                    edgeStack->pop();
+                }
+                printf("\n");
             }
         }
         printf("\tVertex: %d\n\t  ", vertex);

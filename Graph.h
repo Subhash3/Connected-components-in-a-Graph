@@ -34,7 +34,7 @@ public:
     Edge *edges[MAX_EDGES];
 
     // Method Prototypes
-    Graph(int nVertices, int relationShips[][EDGE_RELATION_LEN], int nEdges);
+    Graph(int nVertices, int relationShips[][EDGE_RELATION_LEN], int nEdges, bool isDirected);
     void displayEdgeList();
     void displayVertextPtrs();
     void display();

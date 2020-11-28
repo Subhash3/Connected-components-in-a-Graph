@@ -1,0 +1,18 @@
+Edge list:
+1 --> 2
+1 --> 3
+2 --> 1
+2 --> 3
+3 --> 1
+3 --> 2
+Vertex Pointers:
+1 --> 0
+2 --> 2
+3 --> 4
+Neighbours of vertex 1: {2, 3, }
+Neighbours of vertex 2: {1, 3, }
+Neighbours of vertex 3: {1, 2, }
+1 -> 2 -> 3 -> 
+1 -> 2 -> 3 -> 
+2 -> 1 -> 3 -> 
+3 -> 1 -> 2 -> 

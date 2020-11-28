@@ -16,19 +16,19 @@ void Edge::display()
     return;
 }
 
-Graph::Graph(int nVertices, int relationShips[][EDGE_RELATION_LEN], int nEdges)
+Graph::Graph(int nVertices, int relationShips[][EDGE_RELATION_LEN], int nEdges, bool isDirected)
 {
     this->nVertices = nVertices;
     this->nEdges = nEdges;
     this->edgeListLength = 0;
 
-    int tailVertex, i, edgeIndex = 0;
+    int tailVertex, i;
     int head, tail;
     Edge *tmpEdge;
 
     for (tailVertex = 1; tailVertex <= nVertices; tailVertex++)
     {
-        (this->vertexPtrs)[tailVertex - 1] = edgeIndex;
+        (this->vertexPtrs)[tailVertex - 1] = this->edgeListLength;
         // cout << "Tail Vertex: " << tailVertex << endl;
         for (i = 0; i < nEdges; i++)
         {
@@ -41,23 +41,22 @@ Graph::Graph(int nVertices, int relationShips[][EDGE_RELATION_LEN], int nEdges)
             {
                 // printf("\tConnected! %d\n", head);
                 tmpEdge = new Edge(head, tail);
-                edges[edgeIndex] = tmpEdge;
-                edgeIndex += 1;
+                edges[this->edgeListLength] = tmpEdge;
+                this->edgeListLength += 1;
             }
 
-            if (head == tailVertex)
+            if (!isDirected && (head == tailVertex))
             {
                 // printf("\tConnected! %d\n", tail);
                 tmpEdge = new Edge(tail, head);
-                edges[edgeIndex] = tmpEdge;
-                edgeIndex += 1;
+                edges[this->edgeListLength] = tmpEdge;
+                this->edgeListLength += 1;
             }
         }
     }
 
-    this->edgeListLength = edgeIndex;
     // A dummy slot for nVertices+1 vertex.
-    this->vertexPtrs[nVertices] = edgeIndex;
+    this->vertexPtrs[nVertices] = this->edgeListLength;
 }
 
 void Graph::displayEdgeList()
@@ -144,7 +143,7 @@ void Graph::dfs()
 
 void Graph::dfs(int vertex)
 {
-    cout << "Depth First Search\n";
+    // cout << "Depth First Search\n";
 
     bool isVisited[this->nVertices];
     int i;
@@ -172,7 +171,7 @@ void Graph::dfsUtil(int vertex, bool isVisited[])
     int i;
 
     isVisited[vertex - 1] = true;
-    cout << vertex << ", ";
+    cout << vertex << " -> " << flush;
     NeighboursOf *neighboursObject = this->getNeighboursOf(vertex);
 
     for (i = 0; i < neighboursObject->noOfNeighbours; i++)

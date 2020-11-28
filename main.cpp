@@ -31,18 +31,29 @@ int main(int argc, char **argv)
 
     parseGraphFile(graphFile, edgeRelationShips, &nEdges, &nVertices);
 
-    graph = new Graph(nVertices, edgeRelationShips, nEdges);
+    graph = new Graph(nVertices, edgeRelationShips, nEdges, false);
     graph->display();
 
     for (i = 0; i < nVertices; i++)
     {
         neighboursObject = graph->getNeighboursOf(i + 1);
-        cout << "Neighbours of vertex " << i << ":\n";
+        if (neighboursObject->noOfNeighbours == 0)
+        {
+            cout << "Neighbours of vertex " << i + 1 << ": {}" << endl;
+            continue;
+        }
+        cout << "Neighbours of vertex " << i + 1 << ": {" << flush;
         for (j = 0; j < neighboursObject->noOfNeighbours; j++)
         {
-            cout << neighboursObject->neighboursArr[j] << ", ";
+            cout << neighboursObject->neighboursArr[j] << ", " << flush;
         }
-        cout << "\b\b\n";
+        cout << "\b\b}\n";
+    }
+
+    graph->dfs();
+    for (i = 0; i < nVertices; i++)
+    {
+        graph->dfs(i + 1);
     }
 
     exit(0);

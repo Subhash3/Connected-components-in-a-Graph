@@ -16,6 +16,13 @@ void Edge::display()
     return;
 }
 
+void VertexMetaData::printMetaData()
+{
+    printf("Desc: %d, Low: %d, Visited: %d, onStack: %d\n", this->desc, this->low, this->visited, this->onStack);
+
+    return;
+}
+
 Graph::Graph(int nVertices, int relationShips[][EDGE_RELATION_LEN], int nEdges, bool isDirected)
 {
     this->nVertices = nVertices;
@@ -180,4 +187,87 @@ void Graph::dfsUtil(int vertex, bool isVisited[])
     }
 
     return;
+}
+
+void Graph::tarjansAlgo()
+{
+    int firstVertex, i;
+    int descTime = 0, child = -1;
+    VertexMetaData metaData[this->nVertices];
+    stack<Edge> edgeStack;
+
+    // Ofcourse, it will always be 1. But just to avoid hard-coding;
+    firstVertex = this->edges[0]->tailVertex;
+
+    for (i = 0; i < this->nVertices; i++)
+    {
+        metaData[i].onStack = false;
+        metaData[i].low = 0;
+        metaData[i].desc = 0;
+        metaData[i].visited = false;
+    }
+    tarjansAlgoUtil(firstVertex, 0, metaData, edgeStack, &descTime, &child);
+
+    return;
+}
+
+int Graph::tarjansAlgoUtil(int vertex, int parent, VertexMetaData metaData[], stack<Edge> edgeStack, int *descTime, int *child)
+{
+    int i, val;
+
+    printf("\x1b[33mTAUtil(%d, %d, metdata, edgeStack, %d, child: %d)\x1b[0m\n", vertex, parent, *descTime, *child);
+
+    if (metaData[vertex - 1].visited)
+    {
+        (*descTime) -= 1;
+        printf("%d is already visted.\n", vertex);
+        if (metaData[vertex - 1].onStack)
+        {
+            printf("%d is already visted and is on stack.\n", vertex);
+            printf("Backedge! Returning my(%d) desc value: %d\n", vertex, metaData[vertex - 1].desc);
+            *child = -1;
+            return metaData[vertex - 1].desc;
+        }
+
+        *child = -1;
+        printf("returning -1\n");
+        return -1;
+    }
+
+    metaData[vertex - 1].onStack = true;
+    metaData[vertex - 1].desc = *descTime;
+    metaData[vertex - 1].low = vertex - 1;
+    metaData[vertex - 1].visited = true;
+
+    // cout << vertex << " -> " << flush;
+    NeighboursOf *neighboursObject = this->getNeighboursOf(vertex);
+
+    for (i = 0; i < neighboursObject->noOfNeighbours; i++)
+    {
+        if (neighboursObject->neighboursArr[i] == parent)
+        {
+            continue;
+        }
+        (*descTime)++;
+        val = tarjansAlgoUtil(neighboursObject->neighboursArr[i], vertex, metaData, edgeStack, descTime, child);
+        printf("\tBack in \x1b[34mTAUtil(%d, %d, metdata, edgeStack, %d, child: %d)\x1b[0m\n", vertex, parent, *descTime, *child);
+        if (val != -1)
+        {
+            metaData[vertex - 1].low = min(val, metaData[vertex - 1].low);
+        }
+        if (*child != -1)
+        {
+            if (metaData[vertex - 1].desc <= metaData[*child - 1].low)
+            {
+                printf("\x1b[31m%d is an Articulation Point!\x1b[0m\n", vertex);
+            }
+        }
+        printf("\tVertex: %d\n\t  ", vertex);
+        metaData[vertex - 1].printMetaData();
+    }
+
+    printf("Returning my(%d) low value: %d\n", vertex, metaData[vertex - 1].low);
+    metaData[vertex - 1].onStack = false;
+    *child = vertex;
+    return metaData[vertex - 1].low;
 }

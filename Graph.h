@@ -1,6 +1,10 @@
 #ifndef __GRAPH_H__
 #define __GRAPH_H__
 
+#include <stack>
+
+using namespace std;
+
 #define MAX_VERTICES 256
 #define EDGE_RELATION_LEN 2
 #define MAX_EDGES (MAX_VERTICES * MAX_VERTICES)
@@ -11,6 +15,17 @@ public:
     int vertex;
     int *neighboursArr;
     int noOfNeighbours;
+};
+
+class VertexMetaData
+{
+public:
+    int low;
+    int desc;
+    bool onStack;
+    bool visited;
+
+    void printMetaData();
 };
 
 class Edge
@@ -41,9 +56,11 @@ public:
     NeighboursOf *getNeighboursOf(int vertex);
     void dfs();
     void dfs(int vertex);
+    void tarjansAlgo();
 
 private:
     void dfsUtil(int vertex, bool isVisited[]);
+    int tarjansAlgoUtil(int vertex, int parent, VertexMetaData metaData[], stack<Edge> edgeStack, int *descTime, int *child);
 };
 
 #endif /*__GRAPH_H__*/

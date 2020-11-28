@@ -22,9 +22,10 @@ int main(int argc, char **argv)
     // Declare variables
     char graphFile[MAX_STR_LEN];
     int edgeRelationShips[MAX_EDGES][EDGE_RELATION_LEN];
-    int nVertices, nEdges, i, j;
+    int nVertices, nEdges;
     Graph *graph;
-    NeighboursOf *neighboursObject;
+    // NeighboursOf *neighboursObject;
+    // int i, j;
 
     // Get the graph representation of graph from file.
     strcpy(graphFile, argv[1]);
@@ -34,27 +35,29 @@ int main(int argc, char **argv)
     graph = new Graph(nVertices, edgeRelationShips, nEdges, false);
     graph->display();
 
-    for (i = 0; i < nVertices; i++)
-    {
-        neighboursObject = graph->getNeighboursOf(i + 1);
-        if (neighboursObject->noOfNeighbours == 0)
-        {
-            cout << "Neighbours of vertex " << i + 1 << ": {}" << endl;
-            continue;
-        }
-        cout << "Neighbours of vertex " << i + 1 << ": {" << flush;
-        for (j = 0; j < neighboursObject->noOfNeighbours; j++)
-        {
-            cout << neighboursObject->neighboursArr[j] << ", " << flush;
-        }
-        cout << "\b\b}\n";
-    }
+    // for (i = 0; i < nVertices; i++)
+    // {
+    //     neighboursObject = graph->getNeighboursOf(i + 1);
+    //     if (neighboursObject->noOfNeighbours == 0)
+    //     {
+    //         cout << "Neighbours of vertex " << i + 1 << ": {}" << endl;
+    //         continue;
+    //     }
+    //     cout << "Neighbours of vertex " << i + 1 << ": {" << flush;
+    //     for (j = 0; j < neighboursObject->noOfNeighbours; j++)
+    //     {
+    //         cout << neighboursObject->neighboursArr[j] << ", " << flush;
+    //     }
+    //     cout << "\b\b}\n";
+    // }
 
-    graph->dfs();
-    for (i = 0; i < nVertices; i++)
-    {
-        graph->dfs(i + 1);
-    }
+    // graph->dfs();
+    // for (i = 0; i < nVertices; i++)
+    // {
+    //     graph->dfs(i + 1);
+    // }
+
+    graph->tarjansAlgo();
 
     exit(0);
 }

@@ -2,6 +2,7 @@
 #define __GRAPH_H__
 
 #include <stack>
+#include <list>
 #include <stdarg.h>
 
 using namespace std;
@@ -9,7 +10,7 @@ using namespace std;
 #define MAX_VERTICES 256
 #define EDGE_RELATION_LEN 2
 #define MAX_EDGES (MAX_VERTICES * MAX_VERTICES)
-#define DEBUG 1
+#define DEBUG 0
 
 int printStuff(const char *format, ...);
 
@@ -64,7 +65,7 @@ public:
 
 private:
     void dfsUtil(int vertex, bool isVisited[]);
-    int tarjansAlgoUtil(int vertex, int parent, VertexMetaData metaData[], stack<Edge *> *edgeStack, int *descTime, int *child);
+    int tarjansAlgoUtil(int vertex, int parent, VertexMetaData metaData[], stack<Edge *> *edgeStack, int *descTime, int *child, const int root, list<list<Edge *>> *componentsList);
 };
 
 #endif /*__GRAPH_H__*/

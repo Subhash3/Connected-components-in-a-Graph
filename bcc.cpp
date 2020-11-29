@@ -33,29 +33,7 @@ int main(int argc, char **argv)
     parseGraphFile(graphFile, edgeRelationShips, &nEdges, &nVertices);
 
     graph = new Graph(nVertices, edgeRelationShips, nEdges, false);
-    graph->display();
-
-    // for (i = 0; i < nVertices; i++)
-    // {
-    //     neighboursObject = graph->getNeighboursOf(i + 1);
-    //     if (neighboursObject->noOfNeighbours == 0)
-    //     {
-    //         cout << "Neighbours of vertex " << i + 1 << ": {}" << endl;
-    //         continue;
-    //     }
-    //     cout << "Neighbours of vertex " << i + 1 << ": {" << flush;
-    //     for (j = 0; j < neighboursObject->noOfNeighbours; j++)
-    //     {
-    //         cout << neighboursObject->neighboursArr[j] << ", " << flush;
-    //     }
-    //     cout << "\b\b}\n";
-    // }
-
-    // graph->dfs();
-    // for (i = 0; i < nVertices; i++)
-    // {
-    //     graph->dfs(i + 1);
-    // }
+    // graph->display();
 
     graph->tarjansAlgo();
 
@@ -73,7 +51,8 @@ void parseGraphFile(char *graphFile, int edgeRelationShips[][EDGE_RELATION_LEN],
     fp.open(graphFile);
     if (!fp)
     {
-        return;
+        fprintf(stderr, "\x1b[31mError opening file\x1b[0m %s\n", graphFile);
+        exit(1);
     }
 
     fp.getline(line, MAX_STR_LEN, '\n');
